@@ -7,6 +7,16 @@ import jwt from 'jsonwebtoken';
 import { ScreateUser, SloginUser, SchangeUserPassword } from './user.service';
 import config from '../../config';
 
+type cookieSameSite = boolean | 'none' | 'strict' | 'lax' | undefined;
+
+const cookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: (process.env.NODE_ENV === 'production'
+    ? 'none'
+    : 'strict') as cookieSameSite,
+};
+
 export const CcreateUser = catchAsyncError(async (req, res, _) => {
   const { body } = req;
   const data: IUser = await ScreateUser(body);
@@ -29,7 +39,7 @@ export const CcreateUser = catchAsyncError(async (req, res, _) => {
     message: 'User registered successfully',
     data: exceptPassword,
   };
-  res.cookie('token', token);
+  res.cookie('token', token, cookieOptions);
   sendResponse<IUser>(res, responseObj);
 });
 
@@ -56,7 +66,7 @@ export const CloginUser = catchAsyncError(async (req, res, _) => {
     message: 'User login successful',
     data: responseload,
   };
-  res.cookie('token', token);
+  res.cookie('token', token, cookieOptions);
   sendResponse<ILoggedInWithToken>(res, responseObj);
 });
 

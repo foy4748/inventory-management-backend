@@ -13,8 +13,9 @@ const productSchema = new Schema<IProduct>({
   quantity: { type: Number, required: true },
   releaseDate: { type: String, required: true },
   // Features
-  storage: { type: String, required: true },
-  ram: { type: String, required: true },
+  storage: { type: Number, required: true },
+  ram: { type: Number, required: true },
+  camera: { type: Number, required: true },
 });
 
 const Product = model<IProduct>('Product', productSchema);

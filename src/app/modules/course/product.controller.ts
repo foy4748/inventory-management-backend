@@ -1,0 +1,34 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
+import httpStatus from 'http-status';
+import catchAsyncError from '../../utils/catchAsyncError';
+import sendResponse, { TResponse } from '../../utils/sendResponse';
+import { IProduct, TQuery } from './product.interface';
+import { ScreateProduct, SgetProducts } from './product.service';
+
+export const CproductCreate = catchAsyncError(async (req, res, _) => {
+  const { body, decoded } = req;
+
+  body.createdBy = decoded._id;
+  const data: IProduct = await ScreateProduct(body);
+  const responseObj: TResponse<IProduct> = {
+    success: true,
+    statusCode: httpStatus.CREATED,
+    message: 'Product created successfully',
+    data,
+  };
+  sendResponse<IProduct>(res, responseObj);
+});
+
+export const CgetProducts = catchAsyncError(async (req, res, _) => {
+  const { query }: { query: TQuery } = req;
+  const { data, meta } = await SgetProducts(query);
+  const responseObj: TResponse<IProduct[]> = {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Products retrieved successfully',
+    meta,
+    data,
+  };
+  sendResponse<IProduct[]>(res, responseObj);
+});
