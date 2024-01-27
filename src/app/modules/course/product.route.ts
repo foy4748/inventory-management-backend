@@ -1,6 +1,6 @@
 import express from 'express';
 import validateRequest from '../../middlewares/validateRequests';
-import productValidationSchema, { bulkDeleteIds } from './product.validation';
+import productValidationSchema from './product.validation';
 import {
   CdeleteProducts,
   CgetProducts,
@@ -23,11 +23,6 @@ router.get('/', CgetProducts);
 //   CupdateCourse,
 // );
 
-router.delete(
-  '/',
-  authentication(),
-  validateRequest(bulkDeleteIds),
-  CdeleteProducts,
-);
+router.delete('/', authentication(), CdeleteProducts);
 
 export default router;

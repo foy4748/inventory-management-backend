@@ -7,6 +7,7 @@ export const filterableFields = [
   'category',
   'operatingSystem',
   'connectivity',
+  'releaseDate',
   'powerSource',
   'storage',
   'ram',

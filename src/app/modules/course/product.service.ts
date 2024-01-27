@@ -29,6 +29,9 @@ export const SgetProducts = async (
   // Creating filter Rules
   filterableFields.forEach((field) => {
     if (field in query) {
+      if (field == 'releaseDate') {
+        filterRule[field] = { $gte: query[field] };
+      }
       // For Pagination
       if (field == 'page') {
         paginationRule[field] = Number(query[field]);
