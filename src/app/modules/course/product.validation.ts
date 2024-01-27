@@ -17,4 +17,6 @@ const productValidationSchema = z.object({
   camera: z.number(),
 });
 
+export const bulkDeleteIds = z.array(z.string().length(12));
+
 export default productValidationSchema;

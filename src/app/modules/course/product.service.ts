@@ -53,7 +53,6 @@ export const SgetProducts = async (
 
   const { page, limit } = paginationRule;
   const response = await Product.find(filterRule)
-    .populate('createdBy')
     .skip((page - 1) * limit)
     .limit(limit);
 
@@ -63,4 +62,10 @@ export const SgetProducts = async (
     meta: paginationRule,
     data: response,
   };
+};
+
+// Delete Products
+export const SdeleteProducts = async (payload: string[]) => {
+  const deleteResponse = await Product.deleteMany({ _id: { $in: payload } });
+  return deleteResponse;
 };

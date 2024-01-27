@@ -1,7 +1,9 @@
 import { RequestHandler } from 'express';
-import { AnyZodObject } from 'zod';
+import { AnyZodObject, ZodArray, ZodString } from 'zod';
 
-const validateRequest = (schema: AnyZodObject): RequestHandler => {
+const validateRequest = (
+  schema: AnyZodObject | ZodArray<ZodString, 'many'>,
+): RequestHandler => {
   return async (req, _, next) => {
     const { body } = req;
     //console.log(body);

@@ -4,7 +4,11 @@ import httpStatus from 'http-status';
 import catchAsyncError from '../../utils/catchAsyncError';
 import sendResponse, { TResponse } from '../../utils/sendResponse';
 import { IProduct, TQuery } from './product.interface';
-import { ScreateProduct, SgetProducts } from './product.service';
+import {
+  ScreateProduct,
+  SdeleteProducts,
+  SgetProducts,
+} from './product.service';
 
 export const CproductCreate = catchAsyncError(async (req, res, _) => {
   const { body, decoded } = req;
@@ -31,4 +35,16 @@ export const CgetProducts = catchAsyncError(async (req, res, _) => {
     data,
   };
   sendResponse<IProduct[]>(res, responseObj);
+});
+
+export const CdeleteProducts = catchAsyncError(async (req, res, _) => {
+  const { body }: { body: string[] } = req;
+  const deleteResponse = await SdeleteProducts(body);
+  const responseObj: TResponse<object> = {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Products deleted successfully',
+    data: deleteResponse,
+  };
+  sendResponse(res, responseObj);
 });
