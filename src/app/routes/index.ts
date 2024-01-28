@@ -1,20 +1,20 @@
 import express from 'express';
-import courseRoutes from '../modules/course/course.route';
 //import userRoutes from '../modules/user/user.route';
 import userRoutes from '../modules/user/user.route';
-import productRoutes from '../modules/course/product.route';
+import productRoutes from '../modules/product/product.route';
+import saleRoutes from '../modules/sale/sale.route';
 
 import testRoutes from '../modules/test/test.route';
 const globalRoutes = express.Router();
 
 const routes = [
   {
-    path: '/',
-    element: courseRoutes,
-  },
-  {
     path: '/products',
     element: productRoutes,
+  },
+  {
+    path: '/sales',
+    element: saleRoutes,
   },
   {
     path: '/auth',
