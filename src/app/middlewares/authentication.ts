@@ -17,10 +17,15 @@ const authentication = (): RequestHandler => {
   return catchAsyncError((req, _, next) => {
     const { authorization } = req.headers;
     //console.log(authorization);
-    const decoded = jwt.verify(
-      String(authorization),
-      String(config?.jwt_access_token),
-    ) as TDecodedJWT;
+    let decoded;
+    try {
+      decoded = jwt.verify(
+        String(authorization),
+        String(config?.jwt_access_token),
+      ) as TDecodedJWT;
+    } catch (error) {
+      throw new AppError(403, 'Unauthorized Access 1');
+    }
 
     if (decoded) {
       // JWT Expiry: The provided JWT (JSON Web Token) has expired.
@@ -29,7 +34,7 @@ const authentication = (): RequestHandler => {
     } else {
       // Undefined JWT: No JWT is provided in the request headers.
       // Invalid JWT: The JWT provided is invalid or malformed.
-      throw new Error('Unauthorized Access');
+      throw new AppError(403, 'Unauthorized Access 2');
     }
   });
 };
