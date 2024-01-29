@@ -6,6 +6,7 @@ import {
   CgetProducts,
   CgetSingleProduct,
   CproductCreate,
+  CupdateProduct,
 } from './product.controller';
 import authentication from '../../middlewares/authentication';
 const router = express.Router();
@@ -19,11 +20,7 @@ router.post(
 
 router.get('/', CgetProducts);
 router.get('/:id', CgetSingleProduct);
-// router.put(
-//   '/products/:productId',
-//   authentication(),
-//   CupdateCourse,
-// );
+router.put('/', authentication(), CupdateProduct);
 
 router.delete('/', authentication(), CdeleteProducts);
 

@@ -76,6 +76,16 @@ export const SgetSingleProduct = async (id: string) => {
   return data;
 };
 
+export const SupdateProduct = async (payload: IProduct) => {
+  console.log(payload._id);
+  const data = await Product.updateOne(
+    { _id: new Types.ObjectId(payload._id) },
+    payload,
+  );
+  console.log(data);
+  return data;
+};
+
 // Delete Products
 export const SdeleteProducts = async (payload: string[]) => {
   const deleteResponse = await Product.deleteMany({ _id: { $in: payload } });

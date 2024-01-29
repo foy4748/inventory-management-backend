@@ -9,6 +9,7 @@ import {
   SdeleteProducts,
   SgetProducts,
   SgetSingleProduct,
+  SupdateProduct,
 } from './product.service';
 
 export const CproductCreate = catchAsyncError(async (req, res, _) => {
@@ -48,6 +49,17 @@ export const CgetSingleProduct = catchAsyncError(async (req, res, _) => {
     data: data as IProduct,
   };
   sendResponse<IProduct>(res, responseObj);
+});
+export const CupdateProduct = catchAsyncError(async (req, res, _) => {
+  const { body }: { body: IProduct } = req;
+  const deleteResponse = await SupdateProduct(body);
+  const responseObj: TResponse<object> = {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Products updated successfully',
+    data: deleteResponse,
+  };
+  sendResponse(res, responseObj);
 });
 
 export const CdeleteProducts = catchAsyncError(async (req, res, _) => {
