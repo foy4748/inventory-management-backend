@@ -7,7 +7,7 @@ const saleSchema = new Schema<ISale>({
     min: 0,
     required: true,
   },
-  unitPrice: {
+  price: {
     type: Number,
     min: 0,
     required: true,
@@ -21,15 +21,15 @@ const saleSchema = new Schema<ISale>({
     ref: 'Product',
     required: true,
   },
-  productName: {
+  name: {
     type: String,
     required: true,
   },
-  productBrand: {
+  brand: {
     type: String,
     required: true,
   },
-  productModel: {
+  modelNo: {
     type: String,
     required: true,
   },
