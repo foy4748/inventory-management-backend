@@ -15,9 +15,10 @@ export const ScreateSale = async (payload: ISale) => {
   const toBeSalingProduct = await Product.findById(product_id);
 
   const updatedStock = Number(toBeSalingProduct?.quantity) - saleQuantity;
+  console.log(updatedStock);
   // Checking whether sale is allowed or not
   if (updatedStock < 0) {
-    new AppError(httpStatus.FORBIDDEN, "Can't sale exceeding stock");
+    throw new AppError(httpStatus.FORBIDDEN, "Can't sale exceeding stock");
   }
   await Product.updateOne(
     { _id: new mongoose.Types.ObjectId(product_id) },
