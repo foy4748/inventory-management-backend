@@ -6,6 +6,7 @@ import {
   defaultPage,
   defaultLimit,
 } from './product.constant';
+import { Types } from 'mongoose';
 //import AppError from '../../error/AppError';
 
 // Create a New Product
@@ -65,6 +66,13 @@ export const SgetProducts = async (
     meta: paginationRule,
     data: response,
   };
+};
+
+// Get a Single Product
+export const SgetSingleProduct = async (id: string) => {
+  const data = await Product.findOne({ _id: new Types.ObjectId(id) });
+  console.log(data);
+  return data;
 };
 
 // Delete Products

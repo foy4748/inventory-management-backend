@@ -4,6 +4,7 @@ import productValidationSchema from './product.validation';
 import {
   CdeleteProducts,
   CgetProducts,
+  CgetSingleProduct,
   CproductCreate,
 } from './product.controller';
 import authentication from '../../middlewares/authentication';
@@ -17,6 +18,7 @@ router.post(
 );
 
 router.get('/', CgetProducts);
+router.get('/:id', CgetSingleProduct);
 // router.put(
 //   '/products/:productId',
 //   authentication(),

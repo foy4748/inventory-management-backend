@@ -9,4 +9,5 @@ export default interface ISale {
   productName: string;
   productBrand: string;
   productModel: string;
+  buyer_name: string;
 }

@@ -8,6 +8,7 @@ const saleValidationSchema = z.object({
   productName: z.string(),
   productBrand: z.string(),
   productModel: z.string(),
+  buyer_name: z.string(),
 });
 
 export default saleValidationSchema;

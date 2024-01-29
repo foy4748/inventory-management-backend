@@ -41,7 +41,9 @@ export const SgetSales = async () => {
     .skip((page - 1) * limit)
     .limit(limit);
 
-  paginationRule['total'] = await Sale.find({}).countDocuments();
+  paginationRule['total'] = await Sale.find({
+    quantity: { $nin: [0] },
+  }).countDocuments();
 
   return {
     meta: paginationRule,

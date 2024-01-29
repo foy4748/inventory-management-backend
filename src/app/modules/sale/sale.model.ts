@@ -33,6 +33,10 @@ const saleSchema = new Schema<ISale>({
     type: String,
     required: true,
   },
+  buyer_name: {
+    type: String,
+    required: true,
+  },
 });
 
 const Sale = model<ISale>('Sale', saleSchema);
