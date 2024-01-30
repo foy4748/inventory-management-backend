@@ -1,7 +1,8 @@
 import express from 'express';
 const router = express.Router();
-import { CflushDb } from './test.controller';
+import { CPostSaleDataBrutally, CflushDb } from './test.controller';
 
-router.delete('/', CflushDb);
+router.delete('/flush-db', CflushDb);
+router.post('/post-fake-sale-data', CPostSaleDataBrutally);
 
 export default router;

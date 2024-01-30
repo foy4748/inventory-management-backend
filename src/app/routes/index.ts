@@ -22,7 +22,7 @@ const routes = [
   },
   // Test Routes
   {
-    path: '/flush-db',
+    path: '/test',
     element: testRoutes,
   },
 ];
