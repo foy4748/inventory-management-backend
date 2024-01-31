@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import ISale from './sale.interface';
+import ISale, { TCategorizeSaleQuery } from './sale.interface';
 import Sale from './sale.model';
 import { defaultPage, defaultLimit } from '../product/product.constant';
 import Product from '../product/product.model';
 import AppError from '../../error/AppError';
 import httpStatus from 'http-status';
-import mongoose from 'mongoose';
-
-//import AppError from '../../error/AppError';
+import mongoose, { PipelineStage } from 'mongoose';
 
 // Create a New Sale
 export const ScreateSale = async (payload: ISale) => {
@@ -50,4 +48,96 @@ export const SgetSales = async () => {
     meta: paginationRule,
     data: response,
   };
+};
+
+// Get Yearly, Monthly, Weekly Categorized Sales
+export const SgetCategorizedSales = async (
+  query: null | TCategorizeSaleQuery,
+) => {
+  // https://stackoverflow.com/questions/74986463/how-to-filter-data-between-year-and-month-in-mongodb
+  // Tested in NoSQL Booster
+  const queries = {
+    // Yearly Query
+    yearly: (): PipelineStage[] => [
+      {
+        $group: {
+          _id: { $year: '$sale_date' },
+          totalSale: { $sum: '$quantity' },
+        },
+      },
+      {
+        $sort: { _id: 1 },
+      },
+    ],
+    // Monthly Query
+    monthly: (year: number): PipelineStage[] => [
+      {
+        $match: {
+          $expr: {
+            $and: [
+              { $eq: [{ $year: '$sale_date' }, year] },
+              //{$eq: [{$month: "$sale_date"}, 4] }
+            ],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: { $month: '$sale_date' },
+          totalSale: { $sum: '$quantity' },
+        },
+      },
+      {
+        $sort: { _id: 1 },
+      },
+    ],
+    // Weekly Query
+    weekly: (year: number, month: number): PipelineStage[] => [
+      {
+        $match: {
+          $expr: {
+            $and: [
+              { $eq: [{ $year: '$sale_date' }, year] },
+              { $eq: [{ $month: '$sale_date' }, month] },
+            ],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: { $week: '$sale_date' },
+          totalSale: { $sum: '$quantity' },
+        },
+      },
+      {
+        $sort: { _id: 1 },
+      },
+    ],
+  };
+
+  if (!query?.categorizeBy || query?.categorizeBy == 'yearly') {
+    return await Sale.aggregate(queries['yearly']());
+  } else if (query?.categorizeBy == 'monthly') {
+    if (query?.year) {
+      return await Sale.aggregate(queries['monthly'](Number(query?.year)));
+    } else {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        'Provide Year to categorize by Month',
+      );
+    }
+  } else if (query?.categorizeBy == 'weekly') {
+    if (query?.year && query?.month) {
+      return await Sale.aggregate(
+        queries['weekly'](Number(query?.year), Number(query?.month)),
+      );
+    } else {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        'Provide Year & Month to categorize by Week',
+      );
+    }
+  } else {
+    return await Sale.aggregate(queries['yearly']());
+  }
 };

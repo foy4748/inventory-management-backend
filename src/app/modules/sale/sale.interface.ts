@@ -11,3 +11,9 @@ export default interface ISale {
   modelNo: string;
   buyer_name: string;
 }
+
+export type TCategorizeSaleQuery = {
+  categorizeBy?: null | 'yearly' | 'monthly' | 'weekly';
+  year: number | `${number}`;
+  month: number | `${number}`;
+};
