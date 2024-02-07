@@ -16,4 +16,5 @@ export type TCategorizeSaleQuery = {
   categorizeBy?: null | 'yearly' | 'monthly' | 'weekly';
   year: number | `${number}`;
   month: number | `${number}`;
+  months?: string;
 };

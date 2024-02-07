@@ -2,8 +2,8 @@
 const moment = require('moment');
 
 // Define the year and week of the year
-const year = 2022;
-const week = 53;
+const year = 2021;
+const week = 52;
 
 // Calculate the start date of the week
 const startDate = moment().year(year).week(week).day(1);

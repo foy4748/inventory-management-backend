@@ -3,6 +3,7 @@ import validateRequest from '../../middlewares/validateRequests';
 import saleValidationSchema from './sale.validation';
 import {
   CgetCategorizedSales,
+  CgetCategorizedSalesCount,
   CgetSales,
   CsaleCreate,
 } from './sale.controller';
@@ -17,6 +18,7 @@ router.post(
 );
 
 router.get('/', CgetSales);
+router.get('/categorized-count', CgetCategorizedSalesCount);
 router.get('/categorized', CgetCategorizedSales);
 
 export default router;

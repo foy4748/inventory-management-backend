@@ -4,7 +4,12 @@ import httpStatus from 'http-status';
 import catchAsyncError from '../../utils/catchAsyncError';
 import sendResponse, { TResponse } from '../../utils/sendResponse';
 import ISale, { TCategorizeSaleQuery } from './sale.interface';
-import { ScreateSale, SgetCategorizedSales, SgetSales } from './sale.service';
+import {
+  ScreateSale,
+  SgetCategorizedSales,
+  SgetCategorizedSalesCount,
+  SgetSales,
+} from './sale.service';
 
 export const CsaleCreate = catchAsyncError(async (req, res, _) => {
   const { body, decoded } = req;
@@ -31,6 +36,20 @@ export const CgetSales = catchAsyncError(async (req, res, _) => {
   };
   sendResponse<ISale[]>(res, responseObj);
 });
+
+export const CgetCategorizedSalesCount = catchAsyncError(
+  async (req, res, _) => {
+    const query = req.query;
+    const data = await SgetCategorizedSalesCount(query as TCategorizeSaleQuery);
+    const responseObj: TResponse<object[]> = {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: 'Categorized Sales Counts retrieved successfully',
+      data,
+    };
+    sendResponse<object[]>(res, responseObj);
+  },
+);
 
 export const CgetCategorizedSales = catchAsyncError(async (req, res, _) => {
   const query = req.query;
