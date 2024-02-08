@@ -5,7 +5,7 @@ import { ZodError } from 'zod';
 import httpStatus from 'http-status';
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  console.log(err);
+  //console.log(err);
   let errorResponse: TErrorResponse;
   let statusCode: number = err.statusCode || 500;
   errorResponse = {

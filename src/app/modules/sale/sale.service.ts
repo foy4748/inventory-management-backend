@@ -62,25 +62,29 @@ export const SgetCategorizedSales = async (
     saleDate: '$sale_date',
   };
   const sortLogic: Record<string, 1 | -1> = { _id: -1 };
+
   const queries = {
     // Yearly Data
-    yearly: (): PipelineStage[] => [
-      {
-        $bucket: {
-          groupBy: { $year: '$sale_date' },
-          boundaries: [2021, 2022, 2023],
-          default: 2023,
-          output: {
-            data: {
-              $push: allowedFields,
+    yearly: (years: number[]): PipelineStage[] => {
+      const first = Number(years[0]);
+      return [
+        {
+          $bucket: {
+            groupBy: { $year: '$sale_date' },
+            boundaries: years as number[],
+            default: first - 1,
+            output: {
+              data: {
+                $push: allowedFields,
+              },
             },
           },
         },
-      },
-      {
-        $sort: sortLogic,
-      },
-    ],
+        {
+          $sort: sortLogic,
+        },
+      ];
+    },
 
     // Monthly Data
     monthly: (year: number, months: number[]): PipelineStage[] => [
@@ -133,7 +137,11 @@ export const SgetCategorizedSales = async (
     ],
   };
   if (!query?.categorizeBy || query?.categorizeBy == 'yearly') {
-    return await Sale.aggregate(queries['yearly']());
+    return await Sale.aggregate(
+      queries['yearly'](
+        query?.years.split(',').map((itm) => parseInt(itm)) as number[],
+      ),
+    );
   } else if (query?.categorizeBy == 'monthly') {
     if (query?.year && query?.months) {
       const months = query?.months.split(',').map((itm) => parseInt(itm));
@@ -158,7 +166,9 @@ export const SgetCategorizedSales = async (
       );
     }
   } else {
-    return await Sale.aggregate(queries['yearly']());
+    return await Sale.aggregate(
+      queries['yearly'](query?.years.split(',').map((itm) => parseInt(itm))),
+    );
   }
 };
 

@@ -15,6 +15,7 @@ export default interface ISale {
 export type TCategorizeSaleQuery = {
   categorizeBy?: null | 'yearly' | 'monthly' | 'weekly';
   year: number | `${number}`;
+  years: string;
   month: number | `${number}`;
   months?: string;
 };
