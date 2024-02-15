@@ -60,6 +60,7 @@ export const SgetCategorizedSales = async (
     brand: '$brand',
     modelNo: '$modelNo',
     saleDate: '$sale_date',
+    quantity: '$quantity',
   };
   const sortLogic: Record<string, 1 | -1> = { _id: -1 };
 

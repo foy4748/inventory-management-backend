@@ -32,15 +32,20 @@ export const CcreateUser = catchAsyncError(async (req, res, _) => {
     { expiresIn: 60 * 60 },
   );
 
+  type payloadType = { user: IUser; token: string };
+
   const { password, passwordHistory, ...exceptPassword } = data;
-  const responseObj: TResponse<IUser> = {
+  const responseObj: TResponse<payloadType> = {
     success: true,
     statusCode: httpStatus.CREATED,
     message: 'User registered successfully',
-    data: exceptPassword,
+    data: {
+      user: exceptPassword,
+      token,
+    },
   };
   res.cookie('token', token, cookieOptions);
-  sendResponse<IUser>(res, responseObj);
+  sendResponse<payloadType>(res, responseObj);
 });
 
 export const CloginUser = catchAsyncError(async (req, res, _) => {
