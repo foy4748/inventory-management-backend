@@ -188,7 +188,7 @@ export const SgetCategorizedSalesV2 = async (
     if (field == 'year') {
       filterRule.push({ $eq: [{ $year: '$sale_date' }, Number(query?.year)] });
     }
-    if (field == 'month') {
+    if (field == 'month' && !isNaN(Number(query['month']))) {
       filterRule.push({
         $eq: [{ $month: '$sale_date' }, Number(query?.month)],
       });
