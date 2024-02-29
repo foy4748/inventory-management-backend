@@ -8,6 +8,7 @@ import {
   ScreateSale,
   SgetCategorizedSales,
   SgetCategorizedSalesCount,
+  SgetCategorizedSalesV2,
   SgetSales,
 } from './sale.service';
 
@@ -58,6 +59,21 @@ export const CgetCategorizedSales = catchAsyncError(async (req, res, _) => {
     success: true,
     statusCode: httpStatus.OK,
     message: 'Categorized Sales retrieved successfully',
+    data,
+  };
+  sendResponse<object[]>(res, responseObj);
+});
+
+export const CgetCategorizedSalesV2 = catchAsyncError(async (req, res, _) => {
+  const query = req.query;
+  const { meta, data } = await SgetCategorizedSalesV2(
+    query as TCategorizeSaleQuery,
+  );
+  const responseObj: TResponse<object[]> = {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Categorized Sales retrieved successfully',
+    meta,
     data,
   };
   sendResponse<object[]>(res, responseObj);

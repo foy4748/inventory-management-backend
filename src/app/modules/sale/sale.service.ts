@@ -173,6 +173,51 @@ export const SgetCategorizedSales = async (
   }
 };
 
+// ============================
+
+export const SgetCategorizedSalesV2 = async (
+  query: null | TCategorizeSaleQuery,
+) => {
+  const filterRule = [];
+  const paginationRule: any = {
+    page: defaultPage,
+    limit: defaultLimit,
+    total: 0,
+  };
+  for (const field in query) {
+    if (field == 'year') {
+      filterRule.push({ $eq: [{ $year: '$sale_date' }, Number(query?.year)] });
+    }
+    if (field == 'month') {
+      filterRule.push({
+        $eq: [{ $month: '$sale_date' }, Number(query?.month)],
+      });
+    }
+    if (field == 'page') paginationRule.page = Number(query?.page);
+    if (field == 'limit') paginationRule.page = Number(query?.limit);
+  }
+  if (!filterRule.length)
+    filterRule.push({
+      $eq: [{ $year: '$sale_date' }, Number(new Date().getFullYear())],
+    });
+  paginationRule['total'] = await Sale.find({
+    $expr: {
+      $and: filterRule,
+    },
+  }).countDocuments();
+  const data = await Sale.find({
+    $expr: {
+      $and: filterRule,
+    },
+  })
+    .skip((paginationRule.page - 1) * paginationRule.limit)
+    .limit(paginationRule.limit)
+    .sort({ sale_date: -1 });
+  return { meta: paginationRule, data };
+};
+
+// ============================
+
 // Get Yearly, Monthly, Weekly Categorized Sales Count
 export const SgetCategorizedSalesCount = async (
   query: null | TCategorizeSaleQuery,

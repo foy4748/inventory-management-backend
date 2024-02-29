@@ -4,6 +4,7 @@ import saleValidationSchema from './sale.validation';
 import {
   CgetCategorizedSales,
   CgetCategorizedSalesCount,
+  CgetCategorizedSalesV2,
   CgetSales,
   CsaleCreate,
 } from './sale.controller';
@@ -19,6 +20,6 @@ router.post(
 
 router.get('/', CgetSales);
 router.get('/categorized-count', CgetCategorizedSalesCount);
-router.get('/categorized', CgetCategorizedSales);
+router.get('/categorized', CgetCategorizedSalesV2);
 
 export default router;

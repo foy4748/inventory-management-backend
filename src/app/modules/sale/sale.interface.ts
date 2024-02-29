@@ -18,4 +18,6 @@ export type TCategorizeSaleQuery = {
   years: string;
   month: number | `${number}`;
   months?: string;
+  page: number | `${number}`;
+  limit: number | `${number}`;
 };
