@@ -194,7 +194,7 @@ export const SgetCategorizedSalesV2 = async (
       });
     }
     if (field == 'page') paginationRule.page = Number(query?.page);
-    if (field == 'limit') paginationRule.page = Number(query?.limit);
+    if (field == 'limit') paginationRule.limit = Number(query?.limit);
   }
   if (!filterRule.length)
     filterRule.push({
