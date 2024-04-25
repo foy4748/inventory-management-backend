@@ -54,7 +54,11 @@ export const SgetProducts = async (
       $lte: Number(query['maxPrice']),
     };
   }
-  filterRule['quantity'] = { $nin: [0] };
+  if (query.isRestock) {
+    filterRule['quantity'] = { $in: [0] };
+  } else {
+    filterRule['quantity'] = { $nin: [0] };
+  }
 
   const { page, limit } = paginationRule;
   const response = await Product.find(filterRule)
