@@ -15,6 +15,7 @@ const cookieOptions = {
   sameSite: (process.env.NODE_ENV === 'production'
     ? 'none'
     : 'strict') as cookieSameSite,
+  maxAge: 3600 * 1000,
 };
 
 export const CcreateUser = catchAsyncError(async (req, res, _) => {
@@ -86,4 +87,15 @@ export const CchangeUserPassword = catchAsyncError(async (req, res, _) => {
     data: updatedUser as ILoginUser,
   };
   sendResponse<ILoginUser>(res, responseObj);
+});
+
+export const ClogoutUser = catchAsyncError(async (_, res) => {
+  res.clearCookie('token', { ...cookieOptions, maxAge: 0 });
+  const responseObj: TResponse<boolean> = {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'User logged out successfully',
+    data: true,
+  };
+  sendResponse(res, responseObj);
 });
